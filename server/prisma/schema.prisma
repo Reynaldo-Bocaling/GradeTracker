@@ -72,3 +72,7 @@ model Subject {
   subjectName String
   grades Grades[]
 }
+model Section {
+  id Int @id @default(autoincrement())
+  sectionName String
+}

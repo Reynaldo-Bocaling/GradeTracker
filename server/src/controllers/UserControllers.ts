@@ -91,9 +91,25 @@ export class UserController {
     const data = req.body;
 
     try {
+      for (const grade of data) {
+        const existingGrade = await prisma.grades.findFirst({
+          where: {
+            student_id: grade.student_id,
+            subject_id: grade.subject_id,
+          },
+        });
+
+        if (existingGrade) {
+          return res
+            .status(400)
+            .json({ error: "Grade already exists for subject and student." });
+        }
+      }
+
       await prisma.grades.createMany({
         data: data,
       });
+
       res.status(200).json("Successfully added!");
     } catch (error) {
       return res.status(500).json(error);
@@ -119,7 +135,11 @@ export class UserController {
 
   static async getAllStudent(req: any, res: Response) {
     try {
-      const response = await prisma.student.findMany({});
+      const response = await prisma.student.findMany({
+        include: {
+          grades: true,
+        },
+      });
       res.status(200).json(response);
     } catch (error) {}
   }
@@ -139,7 +159,11 @@ export class UserController {
 
   static async getSubject(req: any, res: Response) {
     try {
-      const response = await prisma.subject.findMany({});
+      const response = await prisma.subject.findMany({
+        include: {
+          grades: true,
+        },
+      });
       res.status(200).json(response);
     } catch (error) {
       return res.status(500).json(error);

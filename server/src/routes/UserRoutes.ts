@@ -3,6 +3,7 @@ import multer from "multer";
 import path from "path";
 import { UserController } from "../controllers/UserControllers";
 import verifyToken from "../middlewares/verifyToken";
+import { sendEmail } from "../controllers/SendEmailController";
 const routes = Router();
 const uploadMoa = multer({ storage: multer.memoryStorage() }).single("pdfFile");
 
@@ -48,4 +49,5 @@ routes.post("/logout", (req: any, res: Response) => {
   }
 });
 
+routes.post("/sendEmail", sendEmail);
 export default routes;

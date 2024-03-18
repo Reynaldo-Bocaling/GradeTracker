@@ -5,6 +5,10 @@ import UserRoutes from "./routes/UserRoutes";
 import Auth from "./utils/auth";
 import verifyToken from "./middlewares/verifyToken";
 
+import nodemailer from "nodemailer";
+import PDFDocument from "pdfkit";
+import fs from "fs";
+
 class App {
   public server;
 
